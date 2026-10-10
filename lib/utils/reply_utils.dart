@@ -95,7 +95,7 @@ abstract final class ReplyUtils {
 
     // CommAntifraud
     if (!isManual) {
-      await Future.pause(const Duration(seconds: 8));
+      await Future<void>.delayed(const Duration(seconds: 8));
     }
     void showReplyCheckResult(
       String message, {

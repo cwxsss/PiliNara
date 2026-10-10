@@ -958,6 +958,11 @@ class RichTextField extends StatefulWidget {
         return SpellCheckSuggestionsToolbar.editableText(
           editableTextState: editableTextState,
         );
+
+      default:
+        return SpellCheckSuggestionsToolbar.editableText(
+          editableTextState: editableTextState,
+        );
     }
   }
 
@@ -1527,6 +1532,11 @@ class RichTextFieldState extends State<RichTextField>
         if (cause == SelectionChangedCause.longPress) {
           _editableText?.bringIntoView(selection.extent);
         }
+
+      default:
+        if (cause == SelectionChangedCause.longPress) {
+          _editableText?.bringIntoView(selection.extent);
+        }
     }
 
     switch (Theme.of(context).platform) {
@@ -1540,6 +1550,9 @@ class RichTextFieldState extends State<RichTextField>
         if (cause == SelectionChangedCause.drag) {
           _editableText?.hideToolbar();
         }
+
+      default:
+        break;
     }
   }
 
@@ -1683,6 +1696,12 @@ class RichTextFieldState extends State<RichTextField>
             RichTextField.inferAndroidSpellCheckConfiguration(
               widget.spellCheckConfiguration,
             );
+
+      default:
+        spellCheckConfiguration =
+            RichTextField.inferAndroidSpellCheckConfiguration(
+              widget.spellCheckConfiguration,
+            );
     }
 
     TextSelectionControls? textSelectionControls = widget.selectionControls;
@@ -1810,6 +1829,20 @@ class RichTextFieldState extends State<RichTextField>
         handleDidLoseAccessibilityFocus = () {
           _effectiveFocusNode.unfocus();
         };
+
+      default:
+        forcePressEnabled = false;
+        textSelectionControls ??= materialTextSelectionHandleControls;
+        paintCursorAboveText = false;
+        cursorOpacityAnimates ??= false;
+        cursorColor = _hasError
+            ? _errorColor
+            : widget.cursorColor ??
+                  selectionStyle.cursorColor ??
+                  theme.colorScheme.primary;
+        selectionColor =
+            selectionStyle.selectionColor ??
+            theme.colorScheme.primary.withValues(alpha: 0.40);
     }
 
     Widget child = RepaintBoundary(

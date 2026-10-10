@@ -1928,6 +1928,17 @@ class RenderEditable extends RenderBox
           caretRect.width,
           caretHeight,
         );
+
+      default:
+        final double caretHeight = cursorHeight;
+        // Center the caret vertically along the text.
+        final double heightDiff = fullHeight - caretHeight;
+        caretRect = Rect.fromLTWH(
+          caretRect.left,
+          caretRect.top - _kCaretHeightOffset + heightDiff / 2,
+          caretRect.width,
+          caretHeight,
+        );
     }
 
     caretRect = caretRect.shift(_paintOffset);
@@ -2409,6 +2420,20 @@ class RenderEditable extends RenderBox
         case TargetPlatform.linux:
         case TargetPlatform.windows:
           break;
+
+        default:
+          if (readOnly) {
+            if (previousWord == null) {
+              return TextSelection(
+                baseOffset: position.offset,
+                extentOffset: position.offset + 1,
+              );
+            }
+            return TextSelection(
+              baseOffset: previousWord.start,
+              extentOffset: position.offset,
+            );
+          }
       }
     }
 
@@ -2482,6 +2507,14 @@ class RenderEditable extends RenderBox
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
+        _caretPrototype = Rect.fromLTWH(
+          0.0,
+          _kCaretHeightOffset,
+          cursorWidth,
+          cursorHeight - 2.0 * _kCaretHeightOffset,
+        );
+
+      default:
         _caretPrototype = Rect.fromLTWH(
           0.0,
           _kCaretHeightOffset,

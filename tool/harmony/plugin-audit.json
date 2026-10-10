@@ -1,0 +1,484 @@
+{
+  "generatedOn": "2026-10-10",
+  "registeredOhosPlugins": [
+    "app_links_ohos",
+    "audio_service_ohos",
+    "audio_session",
+    "battery_plus",
+    "connectivity_plus",
+    "flutter_inappwebview_ohos",
+    "flutter_volume_controller",
+    "media_kit_libs_ohos_video",
+    "media_kit_video",
+    "native_device_orientation",
+    "package_info_plus",
+    "path_provider_ohos",
+    "saver_gallery",
+    "screen_brightness_ohos",
+    "url_launcher_ohos",
+    "wakelock_plus"
+  ],
+  "note": "平台声明清单不等于缺失功能清单；所有插件仍需按实际功能验收。",
+  "plugins": [
+    {
+      "name": "android_file_picker",
+      "hasOhosDeclaration": false,
+      "source": "external:android_file_picker"
+    },
+    {
+      "name": "app_links",
+      "hasOhosDeclaration": false,
+      "source": "external:app_links"
+    },
+    {
+      "name": "app_links_linux",
+      "hasOhosDeclaration": false,
+      "source": "external:app_links_linux"
+    },
+    {
+      "name": "app_links_ohos",
+      "hasOhosDeclaration": true,
+      "source": "external:app_links_ohos"
+    },
+    {
+      "name": "app_links_web",
+      "hasOhosDeclaration": false,
+      "source": "external:app_links_web"
+    },
+    {
+      "name": "audio_service",
+      "hasOhosDeclaration": true,
+      "source": "external:audio_service"
+    },
+    {
+      "name": "audio_service_mpris",
+      "hasOhosDeclaration": false,
+      "source": "external:audio_service_mpris"
+    },
+    {
+      "name": "audio_service_ohos",
+      "hasOhosDeclaration": true,
+      "source": "external:audio_service_ohos"
+    },
+    {
+      "name": "audio_service_web",
+      "hasOhosDeclaration": false,
+      "source": "external:audio_service_web"
+    },
+    {
+      "name": "audio_service_win",
+      "hasOhosDeclaration": false,
+      "source": "external:audio_service_win"
+    },
+    {
+      "name": "audio_session",
+      "hasOhosDeclaration": true,
+      "source": "external:audio_session"
+    },
+    {
+      "name": "battery_plus",
+      "hasOhosDeclaration": true,
+      "source": "external:battery_plus"
+    },
+    {
+      "name": "chat_bottom_container",
+      "hasOhosDeclaration": false,
+      "source": "external:chat_bottom_container"
+    },
+    {
+      "name": "clipboard",
+      "hasOhosDeclaration": false,
+      "source": "external:clipboard"
+    },
+    {
+      "name": "connectivity_plus",
+      "hasOhosDeclaration": true,
+      "source": "external:connectivity_plus"
+    },
+    {
+      "name": "device_info_plus",
+      "hasOhosDeclaration": false,
+      "source": "external:device_info_plus"
+    },
+    {
+      "name": "dynamic_color",
+      "hasOhosDeclaration": false,
+      "source": "external:dynamic_color"
+    },
+    {
+      "name": "file_picker",
+      "hasOhosDeclaration": false,
+      "source": "external:file_picker"
+    },
+    {
+      "name": "file_picker_darwin",
+      "hasOhosDeclaration": false,
+      "source": "external:file_picker_darwin"
+    },
+    {
+      "name": "file_picker_linux",
+      "hasOhosDeclaration": false,
+      "source": "external:file_picker_linux"
+    },
+    {
+      "name": "file_picker_web",
+      "hasOhosDeclaration": false,
+      "source": "external:file_picker_web"
+    },
+    {
+      "name": "file_selector_linux",
+      "hasOhosDeclaration": false,
+      "source": "external:file_selector_linux"
+    },
+    {
+      "name": "file_selector_macos",
+      "hasOhosDeclaration": false,
+      "source": "external:file_selector_macos"
+    },
+    {
+      "name": "file_selector_windows",
+      "hasOhosDeclaration": false,
+      "source": "external:file_selector_windows"
+    },
+    {
+      "name": "flutter_displaymode",
+      "hasOhosDeclaration": false,
+      "source": "external:flutter_displaymode"
+    },
+    {
+      "name": "flutter_inappwebview",
+      "hasOhosDeclaration": true,
+      "source": "external:flutter_inappwebview"
+    },
+    {
+      "name": "flutter_inappwebview_android",
+      "hasOhosDeclaration": false,
+      "source": "external:flutter_inappwebview_android"
+    },
+    {
+      "name": "flutter_inappwebview_ios",
+      "hasOhosDeclaration": false,
+      "source": "external:flutter_inappwebview_ios"
+    },
+    {
+      "name": "flutter_inappwebview_macos",
+      "hasOhosDeclaration": false,
+      "source": "external:flutter_inappwebview_macos"
+    },
+    {
+      "name": "flutter_inappwebview_ohos",
+      "hasOhosDeclaration": true,
+      "source": "external:flutter_inappwebview_ohos"
+    },
+    {
+      "name": "flutter_inappwebview_web",
+      "hasOhosDeclaration": false,
+      "source": "external:flutter_inappwebview_web"
+    },
+    {
+      "name": "flutter_inappwebview_windows",
+      "hasOhosDeclaration": false,
+      "source": "external:flutter_inappwebview_windows"
+    },
+    {
+      "name": "flutter_native_splash",
+      "hasOhosDeclaration": false,
+      "source": "external:flutter_native_splash"
+    },
+    {
+      "name": "flutter_plugin_android_lifecycle",
+      "hasOhosDeclaration": false,
+      "source": "external:flutter_plugin_android_lifecycle"
+    },
+    {
+      "name": "flutter_volume_controller",
+      "hasOhosDeclaration": true,
+      "source": "external:flutter_volume_controller"
+    },
+    {
+      "name": "image_cropper",
+      "hasOhosDeclaration": false,
+      "source": "external:image_cropper"
+    },
+    {
+      "name": "image_cropper_for_web",
+      "hasOhosDeclaration": false,
+      "source": "external:image_cropper_for_web"
+    },
+    {
+      "name": "image_picker",
+      "hasOhosDeclaration": false,
+      "source": "external:image_picker"
+    },
+    {
+      "name": "image_picker_android",
+      "hasOhosDeclaration": false,
+      "source": "external:image_picker_android"
+    },
+    {
+      "name": "image_picker_for_web",
+      "hasOhosDeclaration": false,
+      "source": "external:image_picker_for_web"
+    },
+    {
+      "name": "image_picker_ios",
+      "hasOhosDeclaration": false,
+      "source": "external:image_picker_ios"
+    },
+    {
+      "name": "image_picker_linux",
+      "hasOhosDeclaration": false,
+      "source": "external:image_picker_linux"
+    },
+    {
+      "name": "image_picker_macos",
+      "hasOhosDeclaration": false,
+      "source": "external:image_picker_macos"
+    },
+    {
+      "name": "image_picker_windows",
+      "hasOhosDeclaration": false,
+      "source": "external:image_picker_windows"
+    },
+    {
+      "name": "jni",
+      "hasOhosDeclaration": false,
+      "source": "external:jni"
+    },
+    {
+      "name": "jni_flutter",
+      "hasOhosDeclaration": false,
+      "source": "external:jni_flutter"
+    },
+    {
+      "name": "live_photo_maker",
+      "hasOhosDeclaration": false,
+      "source": "external:live_photo_maker"
+    },
+    {
+      "name": "media_kit_libs_android_video",
+      "hasOhosDeclaration": false,
+      "source": "external:media_kit_libs_android_video"
+    },
+    {
+      "name": "media_kit_libs_ios_video",
+      "hasOhosDeclaration": false,
+      "source": "external:media_kit_libs_ios_video"
+    },
+    {
+      "name": "media_kit_libs_linux",
+      "hasOhosDeclaration": false,
+      "source": "external:media_kit_libs_linux"
+    },
+    {
+      "name": "media_kit_libs_macos_video",
+      "hasOhosDeclaration": false,
+      "source": "external:media_kit_libs_macos_video"
+    },
+    {
+      "name": "media_kit_libs_ohos_video",
+      "hasOhosDeclaration": true,
+      "source": "external:media_kit_libs_ohos_video"
+    },
+    {
+      "name": "media_kit_libs_windows_video",
+      "hasOhosDeclaration": false,
+      "source": "external:media_kit_libs_windows_video"
+    },
+    {
+      "name": "media_kit_native_event_loop",
+      "hasOhosDeclaration": false,
+      "source": "external:media_kit_native_event_loop"
+    },
+    {
+      "name": "media_kit_video",
+      "hasOhosDeclaration": true,
+      "source": "external:media_kit_video"
+    },
+    {
+      "name": "native_device_orientation",
+      "hasOhosDeclaration": true,
+      "source": "external:native_device_orientation"
+    },
+    {
+      "name": "package_info_plus",
+      "hasOhosDeclaration": true,
+      "source": "external:package_info_plus"
+    },
+    {
+      "name": "path_provider",
+      "hasOhosDeclaration": true,
+      "source": "external:path_provider"
+    },
+    {
+      "name": "path_provider_android",
+      "hasOhosDeclaration": false,
+      "source": "external:path_provider_android"
+    },
+    {
+      "name": "path_provider_foundation",
+      "hasOhosDeclaration": false,
+      "source": "external:path_provider_foundation"
+    },
+    {
+      "name": "path_provider_linux",
+      "hasOhosDeclaration": false,
+      "source": "external:path_provider_linux"
+    },
+    {
+      "name": "path_provider_ohos",
+      "hasOhosDeclaration": true,
+      "source": "external:path_provider_ohos"
+    },
+    {
+      "name": "path_provider_windows",
+      "hasOhosDeclaration": false,
+      "source": "external:path_provider_windows"
+    },
+    {
+      "name": "permission_handler_android",
+      "hasOhosDeclaration": false,
+      "source": "external:permission_handler_android"
+    },
+    {
+      "name": "permission_handler_apple",
+      "hasOhosDeclaration": false,
+      "source": "external:permission_handler_apple"
+    },
+    {
+      "name": "saver_gallery",
+      "hasOhosDeclaration": true,
+      "source": "external:saver_gallery"
+    },
+    {
+      "name": "screen_brightness_android",
+      "hasOhosDeclaration": false,
+      "source": "external:screen_brightness_android"
+    },
+    {
+      "name": "screen_brightness_ios",
+      "hasOhosDeclaration": false,
+      "source": "external:screen_brightness_ios"
+    },
+    {
+      "name": "screen_brightness_ohos",
+      "hasOhosDeclaration": true,
+      "source": "external:screen_brightness_ohos"
+    },
+    {
+      "name": "screen_retriever",
+      "hasOhosDeclaration": false,
+      "source": "external:screen_retriever"
+    },
+    {
+      "name": "screen_retriever_linux",
+      "hasOhosDeclaration": false,
+      "source": "external:screen_retriever_linux"
+    },
+    {
+      "name": "screen_retriever_macos",
+      "hasOhosDeclaration": false,
+      "source": "external:screen_retriever_macos"
+    },
+    {
+      "name": "screen_retriever_windows",
+      "hasOhosDeclaration": false,
+      "source": "external:screen_retriever_windows"
+    },
+    {
+      "name": "share_plus",
+      "hasOhosDeclaration": false,
+      "source": "external:share_plus"
+    },
+    {
+      "name": "shared_preferences",
+      "hasOhosDeclaration": false,
+      "source": "external:shared_preferences"
+    },
+    {
+      "name": "shared_preferences_android",
+      "hasOhosDeclaration": false,
+      "source": "external:shared_preferences_android"
+    },
+    {
+      "name": "shared_preferences_foundation",
+      "hasOhosDeclaration": false,
+      "source": "external:shared_preferences_foundation"
+    },
+    {
+      "name": "shared_preferences_linux",
+      "hasOhosDeclaration": false,
+      "source": "external:shared_preferences_linux"
+    },
+    {
+      "name": "shared_preferences_web",
+      "hasOhosDeclaration": false,
+      "source": "external:shared_preferences_web"
+    },
+    {
+      "name": "shared_preferences_windows",
+      "hasOhosDeclaration": false,
+      "source": "external:shared_preferences_windows"
+    },
+    {
+      "name": "tray_manager",
+      "hasOhosDeclaration": false,
+      "source": "external:tray_manager"
+    },
+    {
+      "name": "url_launcher",
+      "hasOhosDeclaration": false,
+      "source": "external:url_launcher"
+    },
+    {
+      "name": "url_launcher_android",
+      "hasOhosDeclaration": false,
+      "source": "external:url_launcher_android"
+    },
+    {
+      "name": "url_launcher_ios",
+      "hasOhosDeclaration": false,
+      "source": "external:url_launcher_ios"
+    },
+    {
+      "name": "url_launcher_linux",
+      "hasOhosDeclaration": false,
+      "source": "external:url_launcher_linux"
+    },
+    {
+      "name": "url_launcher_macos",
+      "hasOhosDeclaration": false,
+      "source": "external:url_launcher_macos"
+    },
+    {
+      "name": "url_launcher_ohos",
+      "hasOhosDeclaration": true,
+      "source": "external:url_launcher_ohos"
+    },
+    {
+      "name": "url_launcher_web",
+      "hasOhosDeclaration": false,
+      "source": "external:url_launcher_web"
+    },
+    {
+      "name": "url_launcher_windows",
+      "hasOhosDeclaration": false,
+      "source": "external:url_launcher_windows"
+    },
+    {
+      "name": "wakelock_plus",
+      "hasOhosDeclaration": true,
+      "source": "external:wakelock_plus"
+    },
+    {
+      "name": "window_manager",
+      "hasOhosDeclaration": false,
+      "source": "external:window_manager"
+    },
+    {
+      "name": "windows_file_picker",
+      "hasOhosDeclaration": false,
+      "source": "external:windows_file_picker"
+    }
+  ]
+}

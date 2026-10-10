@@ -166,4 +166,29 @@ CONTEXT.md
 test*
 /pubspec_overrides.yaml
 .mindfs
-.agents 
+.agents
+# HarmonyOS migration sources and evidence
+!docs/harmonyos-migration.md
+!docs/harmonyos-status.md
+!test/
+!test/widget_test.dart
+
+# Generated HarmonyOS plugin registration
+ohos/entry/src/main/ets/plugins/GeneratedPluginRegistrant.ets
+
+# Local verification logs and system-setting probes
+/tool/harmony/*.log
+/tool/harmony/developer-mode-symlink.dart
+/tool/harmony/enable-developer-mode.ps1
+/tool/harmony/deveco-download-page.html
+/flutter_*.log
+
+# Local device captures and signing credentials
+/tool/harmony/*.jpeg
+/tool/harmony/*.png
+**/*.p12
+**/*.p7b
+**/*.cer
+**/*.keystore
+**/local.properties
+!tool/harmony/test_media_relay.dart

@@ -45,6 +45,7 @@ import 'package:PiliPlus/utils/extension/box_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
+import 'package:PiliPlus/utils/harmony_media_relay.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -79,6 +80,7 @@ typedef PlayerInitCallback = Future<void> Function();
 class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   Player? _videoPlayerController;
   VideoController? _videoController;
+  HarmonyMediaRelay? _harmonyMediaRelay;
 
   static PlPlayerController? _instance;
 
@@ -1155,7 +1157,15 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     };
 
     String video = dataSource.videoSource;
-    if (dataSource.audioSource case final audio? when (audio.isNotEmpty)) {
+    String? audioSource = dataSource.audioSource;
+    if (PlatformUtils.isHarmonyOS && dataSource is! FileSource) {
+      final relay = _harmonyMediaRelay ??= HarmonyMediaRelay(log: debugPrint);
+      video = await relay.wrap(video);
+      if (audioSource != null && audioSource.isNotEmpty) {
+        audioSource = await relay.wrap(audioSource);
+      }
+    }
+    if (audioSource case final audio? when (audio.isNotEmpty)) {
       if (onlyPlayAudio.value) {
         video = audio;
       } else {
@@ -2505,6 +2515,9 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   }
 
   void dispose() {
+    final relay = _harmonyMediaRelay;
+    _harmonyMediaRelay = null;
+    if (relay != null) unawaited(relay.close());
     _cancelAutoAudioOnlyTimer();
     _interruptAutoAudioRestore();
     _autoAudioState = AutoAudioOnlyState.idle;

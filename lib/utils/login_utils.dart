@@ -20,7 +20,8 @@ import 'package:get/get.dart';
 
 abstract final class LoginUtils {
   static FutureOr setWebCookie([Account? account]) {
-    if (Platform.isLinux) return null;
+    // Cookie synchronization requires a registered native WebView implementation.
+    if (Platform.isLinux || web.InAppWebViewPlatform.instance == null) return null;
     final cookies = (account ?? Accounts.main).cookieJar.toList();
     final webManager = web.CookieManager.instance(
       webViewEnvironment: webViewEnvironment,

@@ -1748,6 +1748,8 @@ class EditableText extends StatefulWidget {
       TargetPlatform.linux => true,
       TargetPlatform.macOS => true,
       TargetPlatform.windows => true,
+
+      _ => false,
     };
   }
 
@@ -1875,6 +1877,9 @@ class EditableText extends StatefulWidget {
       case TargetPlatform.linux:
       case TargetPlatform.windows:
         break;
+
+      default:
+        break;
     }
 
     return true;
@@ -1950,6 +1955,9 @@ class EditableText extends StatefulWidget {
         case TargetPlatform.fuchsia:
         case TargetPlatform.linux:
         case TargetPlatform.windows:
+          break;
+
+        default:
           break;
       }
     }
@@ -2432,6 +2440,11 @@ class EditableTextState extends State<EditableText>
         return textEditingValue.text.isNotEmpty &&
             !(textEditingValue.selection.start == 0 &&
                 textEditingValue.selection.end == textEditingValue.text.length);
+
+      default:
+        return textEditingValue.text.isNotEmpty &&
+            !(textEditingValue.selection.start == 0 &&
+                textEditingValue.selection.end == textEditingValue.text.length);
     }
   }
 
@@ -2474,6 +2487,14 @@ class EditableTextState extends State<EditableText>
       case TargetPlatform.linux:
       case TargetPlatform.windows:
         return false;
+
+      default:
+        return !widget.obscureText &&
+            !textEditingValue.selection.isCollapsed &&
+            textEditingValue.selection
+                    .textInside(textEditingValue.text)
+                    .trim() !=
+                '';
     }
   }
 
@@ -2532,6 +2553,17 @@ class EditableTextState extends State<EditableText>
         case TargetPlatform.android:
         case TargetPlatform.fuchsia:
           // Collapse the selection and hide the toolbar and handles.
+          userUpdateTextEditingValue(
+            TextEditingValue(
+              text: textEditingValue.text,
+              selection: TextSelection.collapsed(
+                offset: textEditingValue.selection.end,
+              ),
+            ),
+            SelectionChangedCause.toolbar,
+          );
+
+        default:
           userUpdateTextEditingValue(
             TextEditingValue(
               text: textEditingValue.text,
@@ -2698,6 +2730,9 @@ class EditableTextState extends State<EditableText>
         case TargetPlatform.linux:
         case TargetPlatform.windows:
           hideToolbar();
+
+        default:
+          break;
       }
       switch (defaultTargetPlatform) {
         case TargetPlatform.android:
@@ -2708,6 +2743,9 @@ class EditableTextState extends State<EditableText>
         case TargetPlatform.macOS:
         case TargetPlatform.iOS:
           break;
+
+        default:
+          bringIntoView(textEditingValue.selection.extent);
       }
     }
   }
@@ -4248,6 +4286,8 @@ class EditableTextState extends State<EditableText>
     TargetPlatform.linux ||
     TargetPlatform.macOS ||
     TargetPlatform.windows => false,
+
+    _ => true,
   };
 
   bool _isInternalScrollableNotification(BuildContext? notificationContext) {
@@ -4824,6 +4864,15 @@ class EditableTextState extends State<EditableText>
       case TargetPlatform.windows:
       case TargetPlatform.fuchsia:
       case TargetPlatform.android:
+        if (cause == SelectionChangedCause.drag) {
+          if (oldSelection.baseOffset != newSelection.baseOffset) {
+            bringIntoView(newSelection.base);
+          } else if (oldSelection.extentOffset != newSelection.extentOffset) {
+            bringIntoView(newSelection.extent);
+          }
+        }
+
+      default:
         if (cause == SelectionChangedCause.drag) {
           if (oldSelection.baseOffset != newSelection.baseOffset) {
             bringIntoView(newSelection.base);
@@ -7157,6 +7206,23 @@ class _EditableTextTapOutsideAction
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
         intent.focusNode.unfocus();
+
+      default:
+        switch (intent.pointerDownEvent.kind) {
+          case ui.PointerDeviceKind.touch:
+            if (kIsWeb) {
+              intent.focusNode.unfocus();
+            }
+          case ui.PointerDeviceKind.mouse:
+          case ui.PointerDeviceKind.stylus:
+          case ui.PointerDeviceKind.invertedStylus:
+          case ui.PointerDeviceKind.unknown:
+            intent.focusNode.unfocus();
+          case ui.PointerDeviceKind.trackpad:
+            throw UnimplementedError(
+              'Unexpected pointer down event for trackpad',
+            );
+        }
     }
   }
 }

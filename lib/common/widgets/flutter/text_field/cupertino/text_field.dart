@@ -1167,6 +1167,12 @@ class CupertinoRichTextField extends StatefulWidget {
                 case TargetPlatform.macOS:
                 case TargetPlatform.windows:
                   return null;
+
+                default:
+                  return CupertinoTextMagnifier(
+                    controller: controller,
+                    magnifierInfo: magnifierInfo,
+                  );
               }
             },
       );
@@ -1324,6 +1330,11 @@ class _CupertinoRichTextFieldState extends State<CupertinoRichTextField>
         if (cause == SelectionChangedCause.longPress) {
           _editableText.bringIntoView(selection.extent);
         }
+
+      default:
+        if (cause == SelectionChangedCause.longPress) {
+          _editableText.bringIntoView(selection.extent);
+        }
     }
 
     switch (defaultTargetPlatform) {
@@ -1337,6 +1348,9 @@ class _CupertinoRichTextFieldState extends State<CupertinoRichTextField>
         if (cause == SelectionChangedCause.drag) {
           _editableText.hideToolbar();
         }
+
+      default:
+        break;
     }
   }
 
@@ -1565,6 +1579,9 @@ class _CupertinoRichTextFieldState extends State<CupertinoRichTextField>
         handleDidLoseAccessibilityFocus = () {
           _effectiveFocusNode.unfocus();
         };
+
+      default:
+        textSelectionControls ??= cupertinoTextSelectionHandleControls;
     }
 
     final bool enabled = widget.enabled;

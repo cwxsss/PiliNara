@@ -46,6 +46,7 @@ import 'package:PiliPlus/plugin/pl_player/models/fullscreen_mode.dart';
 import 'package:PiliPlus/plugin/pl_player/models/gesture_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/speed_lock_hint.dart';
 import 'package:PiliPlus/plugin/pl_player/models/video_fit_type.dart';
+import 'package:PiliPlus/plugin/pl_player/models/video_pan_axis.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/app_bar_ani.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/backward_seek.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/bottom_control.dart';
@@ -1232,13 +1233,24 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
   void _onPanUpdate(ScaleUpdateDetails details) {
     if (_gestureType == null) {
       final cumulativeDelta = details.localFocalPoint - _initialFocalPoint!;
-      if (cumulativeDelta.distanceSquared < 1) return;
       final dx = cumulativeDelta.dx.abs();
       final dy = cumulativeDelta.dy.abs();
-      if (dx > 3 * dy) {
+      final VideoPanAxis? axis;
+      if (PlatformUtils.isHarmonyOS) {
+        axis = classifyVideoPan(dx, dy);
+      } else {
+        if (cumulativeDelta.distanceSquared < 1) return;
+        axis = dx > 3 * dy
+            ? VideoPanAxis.horizontal
+            : dy > 3 * dx
+            ? VideoPanAxis.vertical
+            : null;
+      }
+      if (axis == null) return;
+      if (axis == VideoPanAxis.horizontal) {
         _onHorizontalDragStart();
         _gestureType = .horizontal;
-      } else if (dy > 3 * dx) {
+      } else if (axis == VideoPanAxis.vertical) {
         if (!plPlayerController.enableSlideVolumeBrightness &&
             !plPlayerController.enableSlideFS) {
           return;

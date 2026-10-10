@@ -807,6 +807,9 @@ class _VerticalSliderState extends State<VerticalSlider>
             case TargetPlatform.iOS:
             case TargetPlatform.macOS:
               return _buildCupertinoSlider(context);
+
+            default:
+              return _buildMaterialSlider(context);
           }
         }
     }
@@ -976,6 +979,9 @@ class _VerticalSliderState extends State<VerticalSlider>
             focusNode.requestFocus();
           }
         };
+
+      default:
+        break;
     }
 
     final Map<ShortcutActivator, Intent> shortcutMap =
@@ -1554,6 +1560,9 @@ class _RenderSlider extends RenderBox with RelayoutWhenSystemFontsChangeMixin {
       case TargetPlatform.linux:
       case TargetPlatform.windows:
         // Matches Android implementation of material slider.
+        return 0.05;
+
+      default:
         return 0.05;
     }
   }

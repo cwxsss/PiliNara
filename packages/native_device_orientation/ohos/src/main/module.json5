@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "native_device_orientation",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "app": {
+    "bundleName": "com.starfallan.pilinara",
+    "vendor": "PiliNara",
+    "versionCode": 2010501,
+    "versionName": "2.1.5",
+    "icon": "$media:launcher_icon",
+    "label": "$string:app_name"
+  }
+}

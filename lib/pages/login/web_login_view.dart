@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'package:PiliPlus/utils/platform_utils.dart';
 
 import 'package:PiliPlus/http/browser_ua.dart';
 import 'package:PiliPlus/main.dart' show webViewEnvironment;
@@ -141,8 +142,8 @@ class _WebLoginViewState extends State<WebLoginView>
 
   @override
   Widget build(BuildContext context) {
-    if (!Platform.isAndroid) {
-      return const Center(child: Text('网页登录仅支持 Android APK'));
+    if (!Platform.isAndroid && !PlatformUtils.isHarmonyOS) {
+      return const Center(child: Text('网页登录支持 Android 与鸿蒙'));
     }
 
     return Column(

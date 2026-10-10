@@ -378,7 +378,7 @@ Future<void> _screenShot(
     ),
     constraints: const BoxConstraints(maxWidth: 400),
     pixelRatio: 3,
-    future: Future.pause, // wait for asset async loaded
+    future: ([Duration duration = Duration.zero]) => Future<void>.delayed(duration), // wait for asset async loaded
   );
   final bytes = await image.toByteData(format: .png);
   image.dispose();

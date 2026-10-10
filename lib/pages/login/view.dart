@@ -212,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
           icon: const Icon(Icons.login),
           label: const Text('登录'),
         ),
-        if (Platform.isAndroid) ...[
+        if (Platform.isAndroid || PlatformUtils.isHarmonyOS) ...[
           const SizedBox(height: 8),
           TextButton.icon(
             onPressed: _openWebLogin,

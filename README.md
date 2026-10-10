@@ -1,3 +1,13 @@
+# PiliNara 鸿蒙版
+
+保留上游 Flutter 界面和业务逻辑，适配 HarmonyOS 7 / API 26。原项目及来源许可证保持不变（主体 GPLv3）。
+
+已修复启动白屏、白底桌面图标、视频 HTTPS 加载和视频纹理画面问题；后续插件包加入网页登录、版本信息、旋转和外部链接。设备验收范围见 [当前状态](docs/harmonyos-status.md)，构建步骤见 [迁移说明](docs/harmonyos-migration.md)，第三方来源见 [来源记录](packages/HARMONY_PROVENANCE.md)。
+
+构建使用鸿蒙 Flutter 3.47.5-ohos-1.0.0 与 DevEco Studio 26，并应用 tool/harmony/flutter-sdk.patch。请使用英文构建目录；在 DevEco 中自行配置调试签名，证书不包含在仓库内。tool/harmony/build-debug.ps1 可通过 -ProjectRoot、-SdkRoot、-FlutterRoot、-PubCache 指定本机路径，-Sign 生成签名包。首次依赖解析需联网运行 flutter pub get，脚本默认使用离线缓存。
+
+---
+
 <div align="center">
     <img width="200" height="200" src="assets/images/logo/logo.png">
 </div>

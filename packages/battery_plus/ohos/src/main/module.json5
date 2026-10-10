@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "battery_plus",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

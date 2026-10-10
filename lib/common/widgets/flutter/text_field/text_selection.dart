@@ -106,6 +106,8 @@ class TextSelectionGestureDetectorBuilder {
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
+      default:
+        editableText.showMagnifier(positionToShow);
     }
   }
 
@@ -123,6 +125,8 @@ class TextSelectionGestureDetectorBuilder {
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
+      default:
+        editableText.hideMagnifier();
     }
   }
 
@@ -419,6 +423,25 @@ class TextSelectionGestureDetectorBuilder {
           return;
         }
         renderEditable.selectPosition(cause: SelectionChangedCause.tap);
+
+      default:
+        if (editableText.widget.stylusHandwritingEnabled) {
+          final bool stylusEnabled = switch (kind) {
+            PointerDeviceKind.stylus || PointerDeviceKind.invertedStylus =>
+              editableText.widget.stylusHandwritingEnabled,
+            _ => false,
+          };
+          if (stylusEnabled) {
+            Scribe.isFeatureAvailable().then((bool isAvailable) {
+              if (isAvailable) {
+                renderEditable.selectPosition(
+                  cause: SelectionChangedCause.stylusHandwriting,
+                );
+                Scribe.startStylusHandwriting();
+              }
+            });
+          }
+        }
     }
   }
 
@@ -618,6 +641,15 @@ class TextSelectionGestureDetectorBuilder {
               }
             }
         }
+
+      default:
+        editableText.hideToolbar(false);
+        if (isShiftPressedValid) {
+          _extendSelection(details.globalPosition, SelectionChangedCause.tap);
+          return;
+        }
+        renderEditable.selectPosition(cause: SelectionChangedCause.tap);
+        editableText.showSpellCheckSuggestionsToolbar();
     }
     editableText.requestKeyboard();
   }
@@ -683,6 +715,12 @@ class TextSelectionGestureDetectorBuilder {
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
+        renderEditable.selectWord(cause: SelectionChangedCause.longPress);
+        if (editableText.context.mounted) {
+          Feedback.forLongPress(editableText.context);
+        }
+
+      default:
         renderEditable.selectWord(cause: SelectionChangedCause.longPress);
         if (editableText.context.mounted) {
           Feedback.forLongPress(editableText.context);
@@ -757,6 +795,17 @@ class TextSelectionGestureDetectorBuilder {
           to: details.globalPosition,
           cause: SelectionChangedCause.longPress,
         );
+
+      default:
+        renderEditable.selectWordsInRange(
+          from:
+              details.globalPosition -
+              details.offsetFromOrigin -
+              editableOffset -
+              scrollableOffset,
+          to: details.globalPosition,
+          cause: SelectionChangedCause.longPress,
+        );
     }
 
     _showMagnifierIfSupportedByPlatform(details.globalPosition);
@@ -813,6 +862,12 @@ class TextSelectionGestureDetectorBuilder {
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
+        if (!renderEditable.hasFocus) {
+          renderEditable.selectPosition(cause: SelectionChangedCause.tap);
+        }
+        editableText.toggleToolbar();
+
+      default:
         if (!renderEditable.hasFocus) {
           renderEditable.selectPosition(cause: SelectionChangedCause.tap);
         }
@@ -1004,6 +1059,12 @@ class TextSelectionGestureDetectorBuilder {
             from: details.globalPosition,
             cause: SelectionChangedCause.tap,
           );
+
+        default:
+          _selectParagraphsInRange(
+            from: details.globalPosition,
+            cause: SelectionChangedCause.tap,
+          );
       }
     }
     if (shouldShowSelectionToolbar) {
@@ -1055,6 +1116,9 @@ class TextSelectionGestureDetectorBuilder {
         case TargetPlatform.linux:
         case TargetPlatform.windows:
           _extendSelection(details.globalPosition, SelectionChangedCause.drag);
+
+        default:
+          _extendSelection(details.globalPosition, SelectionChangedCause.drag);
       }
     } else {
       switch (defaultTargetPlatform) {
@@ -1103,6 +1167,30 @@ class TextSelectionGestureDetectorBuilder {
             from: details.globalPosition,
             cause: SelectionChangedCause.drag,
           );
+
+        default:
+          switch (details.kind) {
+            case PointerDeviceKind.mouse:
+            case PointerDeviceKind.trackpad:
+              renderEditable.selectPositionAt(
+                from: details.globalPosition,
+                cause: SelectionChangedCause.drag,
+              );
+            case PointerDeviceKind.stylus:
+            case PointerDeviceKind.invertedStylus:
+            case PointerDeviceKind.touch:
+            case PointerDeviceKind.unknown:
+              // For Android, Fuchsia, and iOS platforms, a touch drag
+              // does not initiate unless the editable has focus.
+              if (renderEditable.hasFocus) {
+                renderEditable.selectPositionAt(
+                  from: details.globalPosition,
+                  cause: SelectionChangedCause.drag,
+                );
+                _showMagnifierIfSupportedByPlatform(details.globalPosition);
+              }
+            case null:
+          }
       }
     }
   }
@@ -1209,6 +1297,29 @@ class TextSelectionGestureDetectorBuilder {
               to: details.globalPosition,
               cause: SelectionChangedCause.drag,
             );
+
+          default:
+            switch (details.kind) {
+              case PointerDeviceKind.mouse:
+              case PointerDeviceKind.trackpad:
+                return _selectParagraphsInRange(
+                  from:
+                      dragStartGlobalPosition -
+                      editableOffset -
+                      scrollableOffset,
+                  to: details.globalPosition,
+                  cause: SelectionChangedCause.drag,
+                );
+              case PointerDeviceKind.stylus:
+              case PointerDeviceKind.invertedStylus:
+              case PointerDeviceKind.touch:
+              case PointerDeviceKind.unknown:
+              case null:
+                // Triple tap to drag is not present on these platforms when using
+                // non-precise pointer devices at the moment.
+                break;
+            }
+            return;
         }
       }
 
@@ -1274,6 +1385,34 @@ class TextSelectionGestureDetectorBuilder {
             to: details.globalPosition,
             cause: SelectionChangedCause.drag,
           );
+
+        default:
+          switch (details.kind) {
+            case PointerDeviceKind.mouse:
+            case PointerDeviceKind.trackpad:
+            case PointerDeviceKind.stylus:
+            case PointerDeviceKind.invertedStylus:
+              return renderEditable.selectPositionAt(
+                from:
+                    dragStartGlobalPosition - editableOffset - scrollableOffset,
+                to: details.globalPosition,
+                cause: SelectionChangedCause.drag,
+              );
+            case PointerDeviceKind.touch:
+            case PointerDeviceKind.unknown:
+              if (renderEditable.hasFocus) {
+                renderEditable.selectPositionAt(
+                  from: details.globalPosition,
+                  cause: SelectionChangedCause.drag,
+                );
+                return _showMagnifierIfSupportedByPlatform(
+                  details.globalPosition,
+                );
+              }
+            case null:
+              break;
+          }
+          return;
       }
     }
 
@@ -1569,6 +1708,11 @@ class _TextSelectionGestureDetectorState
         // the clicked position will be selected, and on the next click the
         // paragraph at the position is selected.
         return rawCount < 2 ? rawCount : 2 + rawCount % 2;
+
+      default:
+        return rawCount <= 3
+            ? rawCount
+            : (rawCount % 3 == 0 ? 3 : rawCount % 3);
     }
   }
 
@@ -1721,6 +1865,30 @@ class _TextSelectionGestureDetectorState
                     // Text selection should start from the position of the first pointer
                     // down event.
                     ..dragStartBehavior = DragStartBehavior.down
+                    ..onTapTrackStart = _handleTapTrackStart
+                    ..onTapTrackReset = _handleTapTrackReset
+                    ..onTapDown = _handleTapDown
+                    ..onDragStart = _handleDragStart
+                    ..onDragUpdate = _handleDragUpdate
+                    ..onDragEnd = _handleDragEnd
+                    ..onTapUp = _handleTapUp
+                    ..onCancel = _handleTapCancel;
+                },
+              );
+
+        default:
+          gestures[TapAndHorizontalDragGestureRecognizer] =
+              GestureRecognizerFactoryWithHandlers<
+                TapAndHorizontalDragGestureRecognizer
+              >(
+                () => TapAndHorizontalDragGestureRecognizer(debugOwner: this),
+                (TapAndHorizontalDragGestureRecognizer instance) {
+                  instance
+                    // Text selection should start from the position of the first pointer
+                    // down event.
+                    ..dragStartBehavior = DragStartBehavior.down
+                    ..eagerVictoryOnDrag =
+                        defaultTargetPlatform != TargetPlatform.iOS
                     ..onTapTrackStart = _handleTapTrackStart
                     ..onTapTrackReset = _handleTapTrackReset
                     ..onTapDown = _handleTapDown
@@ -2364,6 +2532,28 @@ class TextSelectionOverlay {
         if (newSelection.baseOffset >= newSelection.extentOffset) {
           return; // Don't allow order swapping.
         }
+
+      default:
+        if (_selection.isCollapsed) {
+          _selectionOverlay.updateMagnifier(
+            _buildMagnifier(
+              currentTextPosition: position,
+              globalGesturePosition: details.globalPosition,
+              renderEditable: renderObject,
+            ),
+          );
+
+          final currentSelection = TextSelection.fromPosition(position);
+          _handleSelectionHandleChanged(currentSelection);
+          return;
+        }
+        newSelection = TextSelection(
+          baseOffset: _selection.baseOffset,
+          extentOffset: position.offset,
+        );
+        if (newSelection.baseOffset >= newSelection.extentOffset) {
+          return; // Don't allow order swapping.
+        }
     }
 
     _handleSelectionHandleChanged(newSelection);
@@ -2489,6 +2679,28 @@ class TextSelectionOverlay {
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
+        if (_selection.isCollapsed) {
+          _selectionOverlay.updateMagnifier(
+            _buildMagnifier(
+              currentTextPosition: position,
+              globalGesturePosition: details.globalPosition,
+              renderEditable: renderObject,
+            ),
+          );
+
+          final currentSelection = TextSelection.fromPosition(position);
+          _handleSelectionHandleChanged(currentSelection);
+          return;
+        }
+        newSelection = TextSelection(
+          baseOffset: position.offset,
+          extentOffset: _selection.extentOffset,
+        );
+        if (newSelection.baseOffset >= newSelection.extentOffset) {
+          return; // Don't allow order swapping.
+        }
+
+      default:
         if (_selection.isCollapsed) {
           _selectionOverlay.updateMagnifier(
             _buildMagnifier(
@@ -3003,6 +3215,9 @@ class SelectionOverlay {
           case TargetPlatform.macOS:
           case TargetPlatform.windows:
             break;
+
+          default:
+            HapticFeedback.selectionClick();
         }
       }
     }

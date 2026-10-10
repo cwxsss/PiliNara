@@ -38,6 +38,8 @@ class _FontSettingPageState extends State<FontSettingPage> {
     .windows => Typography.whiteRedmond,
     .macOS => Typography.whiteRedwoodCity,
     .linux => Typography.whiteHelsinki,
+
+    _ => Typography.whiteMountainView,
   }).bodyMedium?.fontFamily;
 
   // ignore: deprecated_member_use
@@ -82,9 +84,7 @@ class _FontSettingPageState extends State<FontSettingPage> {
   String get _fontLabel {
     final font = _selectedFont;
     if (font == null) return '系统默认';
-    return FontUtils.isCustomFont(font)
-        ? FontUtils.displayName(font)
-        : font;
+    return FontUtils.isCustomFont(font) ? FontUtils.displayName(font) : font;
   }
 
   /// 弹幕字体菜单显示名（跟随应用字体 / 系统默认弹幕字体 / 导入字体族名）

@@ -92,7 +92,16 @@ Future<void> _initAppPath() async {
   appSupportDirPath = (await getApplicationSupportDirectory()).path;
 }
 
-void main() async {
+Future<void> main() async {
+  try {
+    await _startApp();
+  } catch (error, stack) {
+    debugPrint('[HarmonyStartup] failed: $error\n$stack');
+    rethrow;
+  }
+}
+
+Future<void> _startApp() async {
   ScaledWidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
   await _initAppPath();
@@ -145,14 +154,20 @@ void main() async {
     await setupServiceLocator();
   }
 
+  debugPrint('[HarmonyStartup] services ready');
   Request();
+  debugPrint('[HarmonyStartup] after Request();');
   Request.setCookie();
+  debugPrint('[HarmonyStartup] after Request.setCookie();');
   RequestUtils.syncHistoryStatus();
+  debugPrint('[HarmonyStartup] after RequestUtils.syncHistoryStatus();');
 
   SmartDialog.config.toast = SmartConfigToast(displayType: .onlyRefresh);
+  debugPrint('[HarmonyStartup] after SmartDialog.config.toast = SmartConfigToast(displayType: .onlyRefresh);');
 
   // ESC 全平台注册：平板/手机外接键盘也可用（PageRoute 默认不消费 escape）
   FocusManager.instance.addEarlyKeyEventHandler(_onKeyEvent);
+  debugPrint('[HarmonyStartup] after FocusManager.instance.addEarlyKeyEventHandler(_onKeyEvent);');
 
   if (PlatformUtils.isMobile) {
     SystemChrome.setEnabledSystemUIMode(.edgeToEdge);
@@ -202,10 +217,12 @@ void main() async {
     });
   }
 
+  debugPrint('[HarmonyStartup] platform ready');
   if (Pref.dynamicColor) {
     await MyApp.initPlatformState();
   }
 
+  debugPrint('[HarmonyStartup] theme ready');
   if (Pref.enableLog) {
     // 异常捕获 logo记录
     final customParameters = {
@@ -217,7 +234,9 @@ void main() async {
       'MPV Api Version':
           '${NativePlayer.apiVersion >> 16}.${NativePlayer.apiVersion & 0xFFFF}',
     };
+    debugPrint('[HarmonyStartup] log init');
     final fileHandler = await JsonFileHandler.init();
+    debugPrint('[HarmonyStartup] log ready');
 
     Catcher2(
       [?fileHandler, const ConsoleHandler()],
@@ -226,6 +245,7 @@ void main() async {
       customParameters: customParameters,
     );
   } else {
+    debugPrint('[HarmonyStartup] runApp');
     runApp(const MyApp());
   }
 }
